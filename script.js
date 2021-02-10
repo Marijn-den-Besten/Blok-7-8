@@ -1,7 +1,16 @@
-var names = ["vvd", "pvda", "sgp", "groenlinks"];
+console.log('hello world!');
 
-names.forEach(showNames);
+var names = ['bert', 'chantal', 'freek'];
+
+names.forEach(showNames)
 
 function showNames(item) {
-    document.getElementById('showbox').innerHTML += 'Name: ' + item + '<br>';
+    document.getElementById('namecol').innerHTML += 'Name:' + '<br>';
+    document.getElementById('itemcol').innerHTML += item  + '<br>';
+
+    var img = document.createElement('img');
+    img.src = '/Jaar%202/Blok%207%20+%208/Images/'+item+'.jfif';
+    img.width = 100;
+    img.height = 100;
+    document.getElementById('images').appendChild(img);
 }
