@@ -1,6 +1,6 @@
 var names = ['Bert', 'Chantal', 'Defvin', 'Freek', 'Gerda', 'Gert', 'Hanneke', 'Hans', 'Irma', 'Karen', 'Kees', 'Lidia'];
 
-var number = Math.floor(Math.random() * 12);
+var number = Math.floor(Math.random() * names.length);
 var name = names[number]
 
 console.log('Correct number: ' + number);
@@ -27,7 +27,7 @@ function createAnswers(correctName) {
     var answers = [correctName];
 
     while (answers.length !== 3) {
-        var randomName = names[Math.floor(Math.random() * 12)];
+        var randomName = names[Math.floor(Math.random() * names.length)];
         if (randomName !== correctName) {
             if (randomName !== answers[1]) {
                 answers.push(randomName);
@@ -35,9 +35,11 @@ function createAnswers(correctName) {
         }
     }
 
+    answers = shuffleArray(answers);
+
     for (var i = 0; i < answers.length; i++) {
         var coldiv = document.createElement('div');
-        coldiv.className = 'col-4';
+        coldiv.className = 'col';
 
         document.getElementById('answersrow').appendChild(coldiv);
 
@@ -56,4 +58,19 @@ function createAnswers(correctName) {
 function registerAnswer(answer) {
     console.log('In function registerAnswer');
     console.log(answer);
+}
+
+function shuffleArray(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    while (0 !== currentIndex) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
 }
