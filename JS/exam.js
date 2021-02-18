@@ -1,22 +1,20 @@
 var names = ['Bert', 'Chantal', 'Defvin', 'Freek', 'Gerda', 'Gert', 'Hanneke', 'Hans', 'Irma', 'Karen', 'Kees', 'Lidia'];
 
 var number = Math.floor(Math.random() * names.length);
-var name = names[number]
+var rightname = names[number];
 
 console.log('Correct number: ' + number);
-console.log('Correct name: ' + name);
+console.log('Correct name: ' + rightname);
 
-showImage(name);
-createAnswers(name);
+showImage(rightname);
+createAnswers(rightname);
 
 function showImage(image) {
     console.log('In function showImage');
 
     var img = document.createElement('img');
-
+    img.className = 'images'
     img.src = 'Images/' + image + '.jfif';
-    img.width = 500;
-    img.height = 500;
 
     document.getElementById('image').appendChild(img);
 }
@@ -57,7 +55,13 @@ function createAnswers(correctName) {
 
 function registerAnswer(answer) {
     console.log('In function registerAnswer');
-    console.log(answer);
+    if (answer === rightname){
+        console.log('Correct answer');
+        alert('Correct answer');
+        location.reload();
+    } else {
+        console.log('Wrong answer');
+    }
 }
 
 function shuffleArray(array) {

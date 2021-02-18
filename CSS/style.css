@@ -1,3 +1,7 @@
 #imagerow, #answersrow {
     text-align: center;
 }
+
+.images {
+    width: 50%;
+}
