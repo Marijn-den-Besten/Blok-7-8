@@ -1,41 +1,30 @@
 var names = [
-    {Name: 'Bert', Sex: "Male", Good: 0, Wrong: 0},
-    {Name: 'Chantal', Sex: "Female", Good: 0, Wrong: 0},
-    {Name: 'Defvin', Sex: "Male", Good: 0, Wrong: 0},
-    {Name: 'Freek', Sex: "Male", Good: 0, Wrong: 0},
-    {Name: 'Gerda', Sex: "Female", Good: 0, Wrong: 0},
-    {Name: 'Hanneke', Sex: "Female", Good: 0, Wrong: 0},
-    {Name: 'Hans', Sex: "Male", Good: 0, Wrong: 0},
-    {Name: 'Irma', Sex: "Female", Good: 0, Wrong: 0},
-    {Name: 'Karen', Sex: "Female", Good: 0, Wrong: 0},
-    {Name: 'Kees', Sex: "Male", Good: 0, Wrong: 0},
-    {Name: 'Lidia', Sex: "Female", Good: 0, Wrong: 0}
+    {Name: 'Bert', Good: 0, Tries: 0},
+    {Name: 'Chantal', Good: 0, Tries: 0},
+    {Name: 'Defvin', Good: 0, Tries: 0},
+    {Name: 'Freek', Good: 0, Tries: 0},
+    {Name: 'Gerda', Good: 0, Tries: 0},
+    {Name: 'Hanneke', Good: 0, Tries: 0},
+    {Name: 'Hans', Good: 0, Tries: 0},
+    {Name: 'Irma', Good: 0, Tries: 0},
+    {Name: 'Karen', Good: 0, Tries: 0},
+    {Name: 'Kees', Good: 0, Tries: 0},
+    {Name: 'Lidia', Good: 0, Tries: 0}
 ];
-var number;
-var rightname;
-
 var answers = [];
 
+var rightname;
 var progressbarId;
 var progressbarWidth = 1;
 
-console.log('Correct number: ' + number);
-console.log('Correct name: ' + rightname);
-
 reload();
 
-function getNames() {
-    number = Math.floor(Math.random() * names.length);
+function getName() {
+    var number = Math.floor(Math.random() * names.length);
     rightname = names[number].Name;
 
-    console.log(answers);
-}
-
-function showName(name) {
-    console.log('In function showImage');
-
     var namebox = document.createElement('h4');
-    namebox.innerHTML = name;
+    namebox.innerHTML = rightname;
 
     document.getElementById('name').appendChild(namebox);
 }
@@ -77,7 +66,6 @@ function createAnswers(correctName) {
 function registerAnswer(answer) {
     console.log('In function registerAnswer');
     if (answer === rightname) {
-        console.log('Correct answer');
         alert('Correct answer');
 
         for (var i = 0; i < names.length; i++){
@@ -85,6 +73,7 @@ function registerAnswer(answer) {
                 console.log('Good +1');
 
                 names[i].Good += 1;
+                names[i].Tries += 1;
 
                 progressbarWidth = 100;
                 clearInterval(progressbarId);
@@ -99,7 +88,7 @@ function registerAnswer(answer) {
             if (names[u].Name === rightname) {
                 console.log('Wrong +1');
 
-                names[u].Wrong += 1;
+                names[u].Tries += 1;
 
                 progressbarWidth = 100;
                 clearInterval(progressbarId);
@@ -152,7 +141,7 @@ function shuffleArray(array) {
 
 function reload() {
     var y = 0;
-    if (y == 0) {
+    if (y === 0) {
         y = 1;
         var elem = document.getElementById("myBar");
         progressbarWidth = 1;
@@ -174,8 +163,7 @@ function reload() {
     document.getElementById('scoreboard').innerHTML = '';
     answers = [];
 
-    getNames();
-    showName(rightname);
+    getName();
     createAnswers(rightname);
     fillScoreboard();
 }
