@@ -11,13 +11,228 @@ var names = [
     {Name: 'Kees', Good: 0, Tries: 0},
     {Name: 'Lidia', Good: 0, Tries: 0}
 ];
+
+localStorage.setItem('seconds', 10);
+localStorage.setItem('imagesamount', 3);
+
 var answers = [];
 
 var rightname;
 var progressbarId;
 var progressbarWidth = 1;
 
+var toprow = document.getElementById('toprow');
+
+startTrainer();
 reload();
+
+function startTrainer() {
+    document.getElementById('toprow').innerHTML = '';
+
+    createTrainingCard();
+    createScoreboard();
+    createSettingsCard();
+}
+
+function createTrainingCard() {
+    var firstCol = document.createElement('div');
+    firstCol.className = 'col-6';
+
+    toprow.appendChild(firstCol);
+
+    var card = document.createElement('div');
+    card.className = 'card';
+
+    firstCol.appendChild(card);
+
+    var cardheader = document.createElement('div');
+    cardheader.className = 'card-header';
+
+    card.appendChild(cardheader);
+
+    var namediv = document.createElement('div');
+    namediv.className = 'col';
+    namediv.id = 'name';
+
+    cardheader.appendChild(namediv);
+
+    var cardbody = document.createElement('div');
+    cardbody.className = 'card-body';
+
+    card.appendChild(cardbody);
+
+    var imagerow = document.createElement('div');
+    imagerow.className = 'row';
+    imagerow.id = 'imagerow';
+
+    cardbody.appendChild(imagerow);
+
+    var cardfooter = document.createElement('div');
+    cardfooter.className = 'card-footer';
+
+    card.appendChild(cardfooter);
+
+    var progress = document.createElement('div');
+    progress.id = 'myProgress';
+
+    cardfooter.appendChild(progress);
+
+    var bar = document.createElement('div');
+    bar.id = 'myBar';
+
+    progress.appendChild(bar);
+}
+
+function createScoreboard() {
+    var firstCol = document.createElement('div');
+    firstCol.className = 'col-3';
+
+    toprow.appendChild(firstCol);
+
+    var card = document.createElement('div');
+    card.className = 'card';
+
+    firstCol.appendChild(card);
+
+    var cardheader = document.createElement('div');
+    cardheader.className = 'card-header';
+
+    card.appendChild(cardheader);
+
+    var titlerow = document.createElement('div');
+    titlerow.className = 'row';
+
+    cardheader.appendChild(titlerow);
+
+    var titlecol = document.createElement('div');
+    titlecol.className = 'col-8';
+
+    titlerow.appendChild(titlecol);
+
+    var h4 = document.createElement('h4');
+    h4.innerHTML = 'Scoreboard';
+
+    titlecol.appendChild(h4);
+
+    var buttoncol = document.createElement('div');
+    buttoncol.className = 'col-4 ml-0';
+
+    titlerow.appendChild(buttoncol);
+
+    var button = document.createElement('button');
+    button.className = 'btn btn-block btn-primary';
+    button.onclick = function () {history.back()};
+    button.innerHTML = 'Return';
+
+    buttoncol.appendChild(button);
+
+    var cardbody = document.createElement('div');
+    cardbody.className = 'card-body';
+    cardbody.id = 'scoreboard';
+
+    card.appendChild(cardbody);
+}
+
+function createSettingsCard() {
+    var firstCol = document.createElement('div');
+    firstCol.className = 'col-3';
+
+    toprow.appendChild(firstCol);
+
+    var card = document.createElement('div');
+    card.className = 'card';
+
+    firstCol.appendChild(card);
+
+    var cardheader = document.createElement('div');
+    cardheader.className = 'card-header';
+
+    card.appendChild(cardheader);
+
+    var titlerow = document.createElement('div');
+    titlerow.className = 'row';
+
+    cardheader.appendChild(titlerow);
+
+    var titlecol = document.createElement('div');
+    titlecol.className = 'col-8';
+
+    titlerow.appendChild(titlecol);
+
+    var h4 = document.createElement('h4');
+    h4.innerHTML = 'Settings';
+
+    titlecol.appendChild(h4);
+
+    var buttoncol = document.createElement('div');
+    buttoncol.className = 'col-4';
+
+    titlerow.appendChild(buttoncol);
+
+    var cardbody = document.createElement('div');
+    cardbody.className = 'card-body';
+
+    card.appendChild(cardbody);
+
+    var timerow = document.createElement('div');
+    timerow.className = 'row';
+
+    cardbody.appendChild(timerow);
+
+    var time = document.createElement('div');
+    time.className = 'col-4';
+    time.innerHTML = 'Time:';
+
+    timerow.appendChild(time);
+
+    var timeamount = document.createElement('div');
+    timeamount.className = 'col-8';
+    timeamount.innerHTML = localStorage.getItem('seconds');
+
+    timerow.appendChild(timeamount);
+
+    var imageamountrow = document.createElement('div');
+    imageamountrow.className = 'row';
+
+    cardbody.appendChild(imageamountrow);
+
+    var image = document.createElement('div');
+    image.className = 'col-4';
+    image.innerHTML = 'Imageamount:';
+
+    imageamountrow.appendChild(image);
+
+    var imageamount = document.createElement('div');
+    imageamount.className = 'col-8';
+    imageamount.innerHTML = localStorage.getItem('imagesamount');
+
+    imageamountrow.appendChild(imageamount);
+
+    var button = document.createElement('button');
+    button.className = 'btn btn-block btn-primary';
+    button.id = 'settingsbutton';
+    button.innerHTML = 'Settings';
+    button.onclick = function (){
+
+        localStorage.setItem('imagesamount', window.prompt('How many images do you want?'));
+        imageamount.innerHTML = localStorage.getItem('imagesamount');
+
+        localStorage.setItem('seconds', window.prompt('How long do you want it?'));
+        timeamount.innerHTML = localStorage.getItem('seconds');
+
+        progressbarWidth = 100;
+        clearInterval(progressbarId);
+        reload();
+    };
+
+    buttoncol.appendChild(button);
+}
+
+function openSettings() {
+    document.getElementById('toprow').innerHTML = '';
+
+
+}
 
 function getName() {
     var number = Math.floor(Math.random() * names.length);
@@ -34,7 +249,7 @@ function createAnswers(correctName) {
 
     answers.push(rightname);
 
-    while (answers.length !== 3) {
+    while (answers.length != localStorage.getItem('imagesamount')) {
         var randomName = names[Math.floor(Math.random() * names.length)].Name;
         if (randomName !== correctName) {
             if (randomName !== answers[1]) {
@@ -81,6 +296,20 @@ function registerAnswer(answer) {
         }
 
         reload();
+    } else if(answer === 'timeout'){
+        console.log('To late');
+        alert('To late');
+        for (var t = 0; t < names.length; t++){
+            if (names[t].Name === rightname) {
+
+                names[t].Tries += 1;
+
+                progressbarWidth = 100;
+                clearInterval(progressbarId);
+            }
+        }
+
+        reload();
     } else {
         console.log('Wrong answer');
         alert('Wrong answer');
@@ -89,13 +318,8 @@ function registerAnswer(answer) {
                 console.log('Wrong +1');
 
                 names[u].Tries += 1;
-
-                progressbarWidth = 100;
-                clearInterval(progressbarId);
             }
         }
-        
-        reload();
     }
 }
 
@@ -103,7 +327,7 @@ function fillScoreboard() {
     var scoreboard = document.getElementById('scoreboard');
 
     for (var i = 0; i < names.length; i++){
-        var person = document.createElement('div')
+        var person = document.createElement('div');
         person.className = 'row';
 
         scoreboard.appendChild(person);
@@ -111,15 +335,13 @@ function fillScoreboard() {
         var obj = names[i];
 
         for (const item in obj){
-            if (item !== 'Sex') {
-                var col = document.createElement('div');
-                col.className = 'col';
+            var col = document.createElement('div');
+            col.className = 'col';
 
 
-                col.innerHTML = obj[item];
+            col.innerHTML = obj[item];
 
-                person.appendChild(col);
-            }
+            person.appendChild(col);
         }
     }
 }
@@ -145,12 +367,12 @@ function reload() {
         y = 1;
         var elem = document.getElementById("myBar");
         progressbarWidth = 1;
-        progressbarId = setInterval(frame, 100);
+        progressbarId = setInterval(frame, localStorage.getItem('seconds') * 10);
         function frame() {
             if (progressbarWidth >= 100) {
                 clearInterval(progressbarId);
                 y = 0;
-                registerAnswer('')
+                registerAnswer('timeout')
             } else {
                 progressbarWidth++;
                 elem.style.width = progressbarWidth + "%";
