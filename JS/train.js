@@ -23,8 +23,7 @@ var progressbarWidth = 1;
 
 var toprow = document.getElementById('toprow');
 
-startTrainer();
-reload();
+openSettings();
 
 function startTrainer() {
     document.getElementById('toprow').innerHTML = '';
@@ -213,16 +212,10 @@ function createSettingsCard() {
     button.id = 'settingsbutton';
     button.innerHTML = 'Settings';
     button.onclick = function (){
-
-        localStorage.setItem('imagesamount', window.prompt('How many images do you want?'));
-        imageamount.innerHTML = localStorage.getItem('imagesamount');
-
-        localStorage.setItem('seconds', window.prompt('How long do you want it?'));
-        timeamount.innerHTML = localStorage.getItem('seconds');
+        openSettings();
 
         progressbarWidth = 100;
         clearInterval(progressbarId);
-        reload();
     };
 
     buttoncol.appendChild(button);
@@ -231,7 +224,114 @@ function createSettingsCard() {
 function openSettings() {
     document.getElementById('toprow').innerHTML = '';
 
+    var extraCol = document.createElement('div');
+    extraCol.className = 'col-3';
 
+    toprow.appendChild(extraCol);
+
+    var firstCol = document.createElement('div');
+    firstCol.className = 'col-6';
+
+    toprow.appendChild(firstCol);
+
+    var card = document.createElement('div');
+    card.className = 'card';
+
+    firstCol.appendChild(card);
+
+    var cardheader = document.createElement('div');
+    cardheader.className = 'card-header';
+
+    card.appendChild(cardheader);
+
+    var titlediv = document.createElement('div');
+    titlediv.className = 'col';
+
+    cardheader.appendChild(titlediv);
+
+    var settingsbox = document.createElement('h4');
+    settingsbox.innerHTML = 'Settings';
+
+    titlediv.append(settingsbox);
+
+    var cardbody = document.createElement('div');
+    cardbody.className = 'card-body';
+
+    card.appendChild(cardbody);
+
+    var timerow = document.createElement('div');
+    timerow.className = 'row';
+
+    cardbody.appendChild(timerow);
+
+    var time = document.createElement('div');
+    time.className = 'col-4';
+    time.innerHTML = 'Time:';
+
+    timerow.appendChild(time);
+
+    var timeamountdiv = document.createElement('div');
+    timeamountdiv.className = 'col-8';
+
+    timerow.appendChild(timeamountdiv);
+
+    var timeamountinput = document.createElement('input');
+    timeamountinput.type = 'number';
+    timeamountinput.id = 'timeinput';
+    timeamountinput.placeholder = localStorage.getItem('seconds');
+
+    timeamountdiv.appendChild(timeamountinput);
+
+    var imageamountrow = document.createElement('div');
+    imageamountrow.className = 'row';
+
+    cardbody.appendChild(imageamountrow);
+
+    var image = document.createElement('div');
+    image.className = 'col-4';
+    image.innerHTML = 'Imagesamount:';
+
+    imageamountrow.appendChild(image);
+
+    var imageamountdiv = document.createElement('div');
+    imageamountdiv.className = 'col-8';
+
+    imageamountrow.appendChild(imageamountdiv);
+
+    var imageamountinput = document.createElement('input');
+    imageamountinput.type = 'number';
+    imageamountinput.id = 'timeinput';
+    imageamountinput.placeholder = localStorage.getItem('imagesamount');
+
+    imageamountdiv.appendChild(imageamountinput);
+
+    var cardfooter = document.createElement('div');
+    cardfooter.className = 'card-footer';
+
+    card.appendChild(cardfooter);
+
+    var startTraining = document.createElement('button');
+    startTraining.className = 'btn btn-block btn-primary';
+    startTraining.innerHTML = 'Start training';
+    startTraining.onclick = function () {
+        if (timeamountinput.value !== ''){
+            localStorage.setItem('seconds', timeamountinput.value);
+        } else {
+            localStorage.setItem('seconds', localStorage.getItem('seconds'));
+        }
+
+        if (imageamountinput.value !== ''){
+            localStorage.setItem('imagesamount', imageamountinput.value);
+        } else {
+            localStorage.setItem('imagesamount', localStorage.getItem('imagesamount'));
+        }
+
+
+        startTrainer();
+        reload();
+    }
+
+    cardfooter.appendChild(startTraining);
 }
 
 function getName() {
