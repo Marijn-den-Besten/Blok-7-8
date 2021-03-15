@@ -11,6 +11,9 @@ var names = [
     {Name: 'Kees', Good: 0, Tries: 0},
     {Name: 'Lidia', Good: 0, Tries: 0}
 ];
+var historyscore = [];
+
+historyscore.concat(localStorage.getItem('historyscore'));
 
 localStorage.setItem('seconds', 10);
 localStorage.setItem('imagesamount', 3);
@@ -312,7 +315,7 @@ function openSettings() {
 
     var startTraining = document.createElement('button');
     startTraining.className = 'btn btn-block btn-primary';
-    startTraining.innerHTML = 'Start training';
+    startTraining.innerHTML = 'Start';
     startTraining.onclick = function () {
         if (timeamountinput.value !== ''){
             localStorage.setItem('seconds', timeamountinput.value);
@@ -334,8 +337,15 @@ function openSettings() {
     cardfooter.appendChild(startTraining);
 }
 
+
+
 function getName() {
     var number = Math.floor(Math.random() * names.length);
+
+    while (names[number].Good === 1){
+        number = Math.floor(Math.random() * names.length);
+    }
+
     rightname = names[number].Name;
 
     var namebox = document.createElement('h4');
@@ -462,30 +472,46 @@ function shuffleArray(array) {
 }
 
 function reload() {
-    var y = 0;
-    if (y === 0) {
-        y = 1;
-        var elem = document.getElementById("myBar");
-        progressbarWidth = 1;
-        progressbarId = setInterval(frame, localStorage.getItem('seconds') * 10);
-        function frame() {
-            if (progressbarWidth >= 100) {
-                clearInterval(progressbarId);
-                y = 0;
-                registerAnswer('timeout')
-            } else {
-                progressbarWidth++;
-                elem.style.width = progressbarWidth + "%";
+    let checker = arr => arr.every(v => v.Good === 1);
+
+    if (checker(names) === false) {
+        var y = 0;
+        if (y === 0) {
+            y = 1;
+            var elem = document.getElementById("myBar");
+            progressbarWidth = 1;
+            progressbarId = setInterval(frame, localStorage.getItem('seconds') * 10);
+
+            function frame() {
+                if (progressbarWidth >= 100) {
+                    clearInterval(progressbarId);
+                    y = 0;
+                    registerAnswer('timeout')
+                } else {
+                    progressbarWidth++;
+                    elem.style.width = progressbarWidth + "%";
+                }
             }
         }
+
+        document.getElementById('name').innerHTML = '';
+        document.getElementById('imagerow').innerHTML = '';
+        document.getElementById('scoreboard').innerHTML = '';
+        answers = [];
+
+        getName();
+        createAnswers(rightname);
+        fillScoreboard();
+    } else {
+        Date.prototype.addHours = function(h){
+            this.setHours(this.getHours()+h);
+
+            return this;
+        }
+
+        var d = new Date, dformat = [d.getHours(), d.getMinutes(), d.getSeconds()].join(':');
+
+        historyscore.push({score: names, date: d.addHours(1)});
+        localStorage.setItem('historyscore', historyscore);
     }
-
-    document.getElementById('name').innerHTML = '';
-    document.getElementById('imagerow').innerHTML = '';
-    document.getElementById('scoreboard').innerHTML = '';
-    answers = [];
-
-    getName();
-    createAnswers(rightname);
-    fillScoreboard();
 }
